@@ -4,15 +4,22 @@
 
 ### Reasons you might choose Spark
 You prefer Scala or the SQL language
+
 You have mostly JVM infrastructure and legacy systems
+
 You want an established and trusted solution for business
+
 You are mostly doing business analytics with some lightweight machine learning
+
 You want an all-in-one solution
 
 ### Reasons you might choose Dask
 You prefer Python or native code, or have large legacy code bases that you do not want to entirely rewrite
+
 Your use case is complex or does not cleanly fit the Spark computing model
+
 You want a lighter-weight transition from local computing to cluster computing
+
 You want to interoperate with other technologies and don't mind installing multiple packages
 
 ### Reasons to choose both
