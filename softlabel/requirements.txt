@@ -1,0 +1,11 @@
+scipy
+umap
+hdbscan
+matplotlib
+rasterfairy
+scikit-learn
+streamlit
+supermercado
+image_datasets
+keras
+tensorflow
