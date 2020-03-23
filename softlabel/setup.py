@@ -38,10 +38,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=read("requirements.txt").splitlines(),
-    extras_require={
-        "dev": ["pytest", "pre-commit"],
-        "test": ["pytest"],
-    },
+    extras_require={"dev": ["pytest", "pre-commit"], "test": ["pytest"],},
     entry_points="""
       [console_scripts]
       """,

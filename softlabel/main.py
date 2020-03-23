@@ -1,14 +1,20 @@
 import os
-from torchvision.models import inception_v3
-from keras.applications import VGG19, InceptionV3
-from keras.models import Model
+import click
+import glob2
+from softlabel.process import vectorize_images
 
 
-def main():
-	print(inception_v3())
-	base = InceptionV3(include_top=True, weights='imagenet', )
-	print(base)
+def find_images(images):
+    image_list = sorted(glob2.glob(images))
+    return image_list
 
 
-if __name__ == '__main__':
-	main()
+@click.command()
+@click.argument("images")
+@click.argument("output", default=os.getcwd())
+def main(images):
+    pass
+
+
+if __name__ == "__main__":
+    main()

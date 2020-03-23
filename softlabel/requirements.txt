@@ -9,3 +9,6 @@ supermercado
 image_datasets
 keras
 tensorflow
+click
+structlog
+black
