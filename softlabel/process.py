@@ -24,7 +24,6 @@ def image_iter(image_list):
 
 
 def vectorize_images(image_list, **kwargs):
-
     image_vectors = []
     n_images = len(image_list)
 
