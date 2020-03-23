@@ -1,7 +1,7 @@
 import os
 import click
 import glob2
-from softlabel.process import vectorize_images, image_iter
+from softlabel.process import vectorize_images, image_iter, get_umap_projection, cluster
 from softlabel.logging import get_structured_logger
 from logging.config import fileConfig
 import uuid
@@ -68,14 +68,22 @@ def filter_images(image_list):
 @click.argument("images")
 @click.argument("output", default=os.getcwd())
 @click.argument("use_cache", default=False)
-def main(images, output, use_cache):
-    image_list = sorted(glob2.glob(images))
+@click.argument("--n_neighbours", default=15)
+def main(images, output, use_cache, n_neighbours):
+    image_list = sorted(glob2.glob(images, recursive=True))
 
     kwargs = {}
     kwargs["output"] = output
     kwargs["use_cache"] = use_cache
+
     image_list = filter_images(image_list)
-    vectorize_images(image_list, **kwargs)
+    vectors = vectorize_images(image_list, **kwargs)
+
+    kwargs["vectors"] = vectors
+    kwargs["n_neighbours"] = n_neighbours
+    kwargs["min_dist"] = config["min_dist"]
+    kwargs["metric"] = config["metric"]
+    get_umap_projection(kwargs)
 
 
 if __name__ == "__main__":

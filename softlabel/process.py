@@ -8,6 +8,11 @@ import os
 import numpy as np
 from softlabel.logging import get_structured_logger
 from logging.config import fileConfig
+import multiprocessing
+from hdbscan import HDBSCAN
+from collections import defaultdict, Counter
+from sklearn.metrics import pairwise_distances_argmin_min
+from umap import UMAP
 
 fileConfig("logging.ini")
 
@@ -49,3 +54,53 @@ def vectorize_images(image_list, **kwargs):
         )
 
     return np.array(image_vectors)
+
+
+def get_umap_projection(**kwargs):
+    """Get the x,y positions of images passed through a umap projection"""
+    print(" * creating UMAP layout")
+
+    model = UMAP(
+        n_neighbors=kwargs["n_neighbors"],
+        min_dist=kwargs["min_dist"],
+        metric=kwargs["metric"],
+    )
+    z = model.fit_transform(kwargs["vecs"])
+
+    print(z)
+
+
+def cluster(**kwargs):
+    """Return the stable clusters from the condensed tree of connected components from the density graph"""
+    print(
+        " * HDBSCAN clustering data with "
+        + str(multiprocessing.cpu_count())
+        + " cores..."
+    )
+    config = {
+        "min_cluster_size": kwargs["min_cluster_size"],
+        "cluster_selection_epsilon": 0.01,
+        "min_samples": 1,
+        "core_dist_n_jobs": multiprocessing.cpu_count(),
+    }
+    z = HDBSCAN(**config).fit(kwargs["vecs"])
+    # find the centroids for each cluster
+
+    print(z)
+
+    # d = defaultdict(list)
+    # for idx, i in enumerate(z.labels_):
+    #   d[i].append(kwargs['vecs'][idx])
+    # centroids = []
+    # for i in d:
+    #   x, y = np.array(d[i]).T
+    #   centroids.append(np.array([np.sum(x)/len(x), np.sum(y)/len(y)]))
+    # closest, _ = pairwise_distances_argmin_min(centroids, kwargs['vecs'])
+    # closest = set(closest)
+    # print(' * found', len(closest), 'clusters')
+    # paths = [kwargs['image_paths'][i] for i in closest]
+    # data = [{
+    #   'img': paths[idx],
+    #   'label': 'Cluster {}'.format(idx+1),
+    # } for idx,i in enumerate(closest)]
+    #
