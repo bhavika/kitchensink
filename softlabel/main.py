@@ -68,7 +68,7 @@ def filter_images(image_list):
 @click.argument("images")
 @click.argument("output", default=os.getcwd())
 @click.argument("use_cache", default=False)
-@click.argument("--n_neighbours", default=15)
+@click.argument("n_neighbours", default=15)
 def main(images, output, use_cache, n_neighbours):
     image_list = sorted(glob2.glob(images, recursive=True))
 
